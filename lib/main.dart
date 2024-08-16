@@ -17,6 +17,8 @@ void main() {
     final preferences = await SharedPreferences.getInstance();
     final preferencesService = PreferencesService(preferences);
 
+    await NotificationService().init();
+
     runApp(
       ScreenUtilInit(
         designSize: const Size(375, 812),
