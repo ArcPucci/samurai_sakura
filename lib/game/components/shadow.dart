@@ -8,17 +8,19 @@ class PlayerShadow extends SpriteComponent with HasGameRef<MyGame> {
   FutureOr<void> onLoad() async {
     await super.onLoad();
 
-    final newX = gameRef.size.x / 2 - shadowWidth / 2;
-    final _y = gameRef.size.y / 1.48 + playerHeight - shadowHeight / 2;
+    final newX = gameRef.size.x / 2 - AppConfig.shadowWidth / 2;
+    final _y = gameRef.size.y / 1.48 +
+        AppConfig.playerHeight -
+        AppConfig.shadowHeight / 2;
 
     position = Vector2(newX, _y);
     sprite = await Sprite.load('shadow.png');
-    size = Vector2(shadowWidth, shadowHeight);
+    size = Vector2(AppConfig.shadowWidth, AppConfig.shadowHeight);
   }
 
   void onUpdatePosition() {
     final _x = gameRef.player.x;
-    final newX = _x - shadowWidth / 2;
+    final newX = _x - AppConfig.shadowWidth / 2;
 
     position = Vector2(newX, position.y);
   }

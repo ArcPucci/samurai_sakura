@@ -13,29 +13,36 @@ class GameOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player = (game as MyGame).player;
-    return Material(
-      color: Colors.transparent,
-      child: SafeArea(
-        child: SizedBox(
-          width: 375.w,
-          child: Column(
-            children: [
-              Gap(8.h),
-              SizedBox(
+    final myGame = game as MyGame;
+    final player = myGame.player;
+    return SafeArea(
+      child: SizedBox(
+        width: 375.w,
+        child: Column(
+          children: [
+            Gap(8.h),
+            Material(
+              color: Colors.transparent,
+              child: SizedBox(
                 width: 327.w,
                 height: 42.h,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const ArrowWidget(icon: 'assets/items/left.png'),
+                    ArrowWidget(
+                      icon: 'assets/items/left.png',
+                      onClose: myGame.onPause,
+                    ),
                     Text('Game', style: AppTextStyles.semibold16),
                     Gap(42.w),
                   ],
                 ),
               ),
-              Gap(16.h),
-              SizedBox(
+            ),
+            Gap(16.h),
+            Material(
+              color: Colors.transparent,
+              child: SizedBox(
                 width: 311.w,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,34 +55,55 @@ class GameOverlay extends StatelessWidget {
                           height: 24.h,
                         ),
                         Gap(8.w),
-                        Text(
-                          "75",
-                          style: AppTextStyles.semibold16.copyWith(
-                            color: Colors.white,
-                          ),
+                        ValueListenableBuilder(
+                          valueListenable: myGame.gameManager.score,
+                          builder: (context, value, child) {
+                            return Text(
+                              "$value",
+                              style: AppTextStyles.semibold16.copyWith(
+                                color: Colors.white,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
-                    CustomBox(
-                      children: [
-                        Image.asset(
-                          'assets/items/filled_hp.png',
-                          width: 24.w,
-                          height: 24.h,
-                        ),
-                        Gap(4.w),
-                        Image.asset(
-                          'assets/items/filled_hp.png',
-                          width: 24.w,
-                          height: 24.h,
-                        ),
-                        Gap(4.w),
-                        Image.asset(
-                          'assets/items/empty_hp.png',
-                          width: 24.w,
-                          height: 24.h,
-                        ),
-                      ],
+                    ValueListenableBuilder(
+                      valueListenable: myGame.gameManager.health,
+                      builder: (context, value, child) {
+                        return CustomBox(
+                          children: List.generate(
+                            3,
+                            (index) {
+                              final last = index != 2;
+
+                              if (value <= index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    right: last ? 0 : 4.w,
+                                  ),
+                                  child: Image.asset(
+                                    'assets/items/empty_hp.png',
+                                    width: 24.w,
+                                    height: 24.h,
+                                  ),
+                                );
+                              }
+
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  right: last ? 0 : 4.w,
+                                ),
+                                child: Image.asset(
+                                  'assets/items/filled_hp.png',
+                                  width: 24.w,
+                                  height: 24.h,
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
                     CustomBox(
                       children: [
@@ -85,38 +113,48 @@ class GameOverlay extends StatelessWidget {
                           height: 24.h,
                         ),
                         Gap(8.w),
-                        Text(
-                          "01:35",
-                          style: AppTextStyles.semibold16.copyWith(
-                            color: Colors.white,
-                          ),
+                        ValueListenableBuilder(
+                          valueListenable: myGame.gameManager.seconds,
+                          builder: (context, value, child) {
+                            final temp = value.toInt();
+                            final seconds = temp % 60;
+                            final minutes = temp ~/ 60;
+                            final min = minutes.toString().padLeft(2, '0');
+                            final sec = seconds.toString().padLeft(2, '0');
+                            return Text(
+                              "$min:$sec",
+                              style: AppTextStyles.semibold16.copyWith(
+                                color: Colors.white,
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GameButton(
-                    onTap: () => player.onTap(PlayerDirection.left),
-                    onCancel: player.onCancel,
-                    onHold: player.onGoLeft,
-                  ),
-                  Gap(16.w),
-                  GameButton(
-                    left: false,
-                    onTap: () => player.onTap(PlayerDirection.right),
-                    onCancel: player.onCancel,
-                    onHold: player.onGoRight,
-                  ),
-                ],
-              ),
-              Gap(24.h),
-            ],
-          ),
+            ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GameButton(
+                  onTap: () => player.onTap(PlayerDirection.left),
+                  onCancel: player.onCancel,
+                  onHold: player.onGoLeft,
+                ),
+                Gap(16.w),
+                GameButton(
+                  left: false,
+                  onTap: () => player.onTap(PlayerDirection.right),
+                  onCancel: player.onCancel,
+                  onHold: player.onGoRight,
+                ),
+              ],
+            ),
+            Gap(24.h),
+          ],
         ),
       ),
     );

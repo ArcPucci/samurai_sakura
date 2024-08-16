@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:id_295/services/services.dart';
 import 'package:id_295/utils/app_text_styles.dart';
 import 'package:id_295/widgets/custom_button.dart';
+import 'package:provider/provider.dart';
 
 class ContinueScreen extends StatelessWidget {
   const ContinueScreen({super.key});
@@ -53,7 +55,14 @@ class ContinueScreen extends StatelessWidget {
                   Gap(32.h),
                   CustomButton(
                     text: 'Continue',
-                    onTap: () => context.go('/'),
+                    onTap: () async {
+                      final value = Provider.of<PreferencesService>(
+                        context,
+                        listen: false,
+                      );
+                      await value.onSetFirstInit();
+                      context.go('/');
+                    },
                   ),
                   Gap(24.h),
                   SizedBox(

@@ -4,14 +4,15 @@ import 'package:go_router/go_router.dart';
 import 'package:id_295/utils/utils.dart';
 
 class ArrowWidget extends StatelessWidget {
-  const ArrowWidget({super.key, required this.icon});
+  const ArrowWidget({super.key, required this.icon, this.onClose});
 
   final String icon;
+  final VoidCallback? onClose;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: context.pop,
+      onTap: onClose ?? context.pop,
       child: Container(
         width: 42.w,
         height: 42.h,

@@ -2,7 +2,8 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:id_295/game/game.dart';
-import 'package:id_295/game/overlays/game_overlay.dart';
+import 'package:id_295/main.dart';
+import 'package:provider/provider.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -16,8 +17,11 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   void initState() {
-    _game = MyGame();
     super.initState();
+    _game = MyGame(
+      topPadding: topPadding,
+      preferencesService: Provider.of(context, listen: false),
+    );
   }
 
   @override
@@ -26,6 +30,10 @@ class _GameScreenState extends State<GameScreen> {
       game: _game,
       overlayBuilderMap: <String, Widget Function(BuildContext, Game)>{
         "game_overlay": (context, game) => GameOverlay(game),
+        "instructions1": (context, game) => Instructions1Overlay(game),
+        "instructions2": (context, game) => Instructions2Overlay(game),
+        "results": (context, game) => ResultsOverlay(game),
+        "warning": (context, game) => WarningOverlay(game),
       },
       backgroundBuilder: (context) => Image.asset(
         'assets/items/bg.png',

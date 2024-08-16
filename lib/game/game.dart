@@ -1,5 +1,12 @@
 export 'my_game.dart';
-export 'player.dart';
-export 'shadow.dart';
-export 'constants.dart';
+export 'components/player.dart';
+export 'components/shadow.dart';
+export 'components/falling_item.dart';
+export 'config/app_config.dart';
 export 'overlays/game_overlay.dart';
+export 'overlays/instructions_1_overlay.dart';
+export 'overlays/instructions_2_overlay.dart';
+export 'overlays/results_overlay.dart';
+export 'overlays/warning_overlay.dart';
+export 'managers/object_manager.dart';
+export 'managers/game_manager.dart';
