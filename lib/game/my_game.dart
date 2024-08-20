@@ -5,7 +5,7 @@ import 'package:flame/game.dart';
 import 'package:id_295/game/game.dart';
 import 'package:id_295/services/services.dart';
 
-class MyGame extends FlameGame with TapCallbacks {
+class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   final PreferencesService preferencesService;
 
   final list = ["torch.png", "flower1.png", "flower2.png"];

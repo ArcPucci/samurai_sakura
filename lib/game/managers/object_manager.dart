@@ -47,7 +47,7 @@ class ObjectManager extends Component with HasGameRef<MyGame> {
 
   String _getItem() {
     final rand = Random().nextInt(100);
-    if (rand > 80) return "torch.png";
+    if (rand > 65) return "torch.png";
 
     final rand2 = Random().nextBool();
     if (rand2) return "flower1.png";

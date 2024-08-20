@@ -6,7 +6,8 @@ import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart' as composition;
 import 'package:id_295/game/game.dart';
 
-class FallingItem extends SpriteComponent with HasGameRef<MyGame> {
+class FallingItem extends SpriteComponent
+    with HasGameRef<MyGame>, CollisionCallbacks {
   FallingItem({
     required this.image,
     required this.path,
@@ -32,6 +33,7 @@ class FallingItem extends SpriteComponent with HasGameRef<MyGame> {
   FutureOr<void> onLoad() async {
     await super.onLoad();
     position = _initPos;
+    await add(hitBox);
   }
 
   Vector2 velocity = Vector2(0, 175);
@@ -54,7 +56,12 @@ class FallingItem extends SpriteComponent with HasGameRef<MyGame> {
     removeFromParent();
   }
 
-  void onCut() {
+  void onCut() async {
+    if (!path.contains('torch')) {
+      removeFromParent();
+      return;
+    }
+
     final dividedImage1 = composition.ImageComposition()
           ..add(
             image,
@@ -88,7 +95,7 @@ class FallingItem extends SpriteComponent with HasGameRef<MyGame> {
         path: path,
         divided: true,
         initPos: center - Vector2(size.x / 4, 0),
-      ),
+      )..onRemove(),
       FallingItem(
         size: Vector2(size.x / 2, size.y),
         anchor: Anchor.center,
@@ -96,9 +103,28 @@ class FallingItem extends SpriteComponent with HasGameRef<MyGame> {
         divided: true,
         image: dividedImage2.composeSync(),
         initPos: center + Vector2(size.x / 4, 0),
-      ),
+      )..onRemove(),
     });
 
     removeFromParent();
+  }
+
+  Future<void> onRemove() async {
+    await Future.delayed(Duration(milliseconds: 300));
+    removeFromParent();
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+
+    if (divided) return;
+    if (other is! Player) return;
+
+    if (path.contains('torch')) return;
+
+    onCut();
+
+    gameRef.gameManager.onScore();
   }
 }

@@ -7,7 +7,8 @@ import '../game.dart';
 
 enum PlayerDirection { left, right, none }
 
-class Player extends SpriteComponent with HasGameRef<MyGame> {
+class Player extends SpriteComponent
+    with HasGameRef<MyGame>, CollisionCallbacks {
   Player({super.position});
 
   final hitBox = RectangleHitbox();

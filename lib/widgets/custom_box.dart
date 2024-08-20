@@ -20,7 +20,7 @@ class CustomBox extends StatelessWidget {
       width: width ?? 96.w,
       height: 48.h,
       decoration: BoxDecoration(
-        color: AppTheme.red1,
+        color: color ?? AppTheme.red1,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
