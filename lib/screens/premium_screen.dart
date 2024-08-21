@@ -49,7 +49,6 @@ class PremiumScreen extends StatelessWidget {
                     const Spacer(),
                     SizedBox(
                       width: 343.w,
-                      height: 114.h,
                       child: RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(

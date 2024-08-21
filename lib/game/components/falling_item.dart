@@ -125,6 +125,6 @@ class FallingItem extends SpriteComponent
 
     onCut();
 
-    gameRef.gameManager.onScore();
+    gameRef.gameManager.onScore(5);
   }
 }

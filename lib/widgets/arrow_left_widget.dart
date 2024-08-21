@@ -14,8 +14,8 @@ class ArrowWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onClose ?? context.pop,
       child: Container(
-        width: 42.w,
-        height: 42.h,
+        width: 42.sp,
+        height: 42.sp,
         decoration: BoxDecoration(
           color: AppTheme.red1,
           borderRadius: BorderRadius.circular(8),

@@ -71,8 +71,7 @@ class ObjectManager extends Component with HasGameRef<MyGame> {
       if (playerPos.y + playerSize.y < pos.y) continue;
 
       item.onCut();
-
-      if (!item.path.contains('torch')) gameRef.gameManager.onScore();
+      gameRef.gameManager.onScore(10);
     }
   }
 }

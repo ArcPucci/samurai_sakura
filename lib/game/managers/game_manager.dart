@@ -44,7 +44,7 @@ class GameManager extends Component with HasGameRef<MyGame> {
     seconds.value += dt;
   }
 
-  void onScore() => score.value++;
+  void onScore(int points) => score.value += points;
 
   void onFail() async {
     health.value--;
